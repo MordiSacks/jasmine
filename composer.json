@@ -23,7 +23,10 @@
   "autoload": {
     "psr-4": {
       "Jasmine\\": "src/"
-    }
+    },
+    "files": [
+      "inc/helpers.php"
+    ]
   },
   "extra": {
     "laravel": {
