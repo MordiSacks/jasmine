@@ -9,5 +9,5 @@
  */
 function jMix($path, $mix)
 {
-    return mix($path, 'jasmine/' . $mix);
+    return asset(mix($path, 'jasmine/' . $mix));
 }
