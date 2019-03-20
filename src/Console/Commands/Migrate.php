@@ -29,6 +29,13 @@ class Migrate extends Command
     public function __construct()
     {
         parent::__construct();
+
+        if (
+            count($_SERVER['argv']) === 2
+            && $_SERVER['argv'][1] === 'jasmine:migrate'
+        ) {
+            config(['database.migrations' => 'jasmine_migrations']);
+        }
     }
 
     /**

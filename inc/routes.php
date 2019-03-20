@@ -14,7 +14,7 @@ Route::group([
     'prefix'     => config('jasmine.admin_path'),
     'namespace'  => '\\Jasmine\\Http\Controllers',
     'as'         => 'jasmine.',
-    'name'         => 'jasmine.',
+    'name'       => 'jasmine.',
     'middleware' => [
         \Jasmine\Http\Middleware\EncryptCookies::class,
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
@@ -38,4 +38,10 @@ Route::group([
     Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
 
 
+    // Authenticated routes
+    Route::group([
+        'middleware' => ['jasmineAuth:jasmine_web'],
+    ], function () {
+        Route::get('/', 'DashboardController@index')->name('dashboard');
+    });
 });

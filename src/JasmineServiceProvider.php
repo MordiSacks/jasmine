@@ -7,6 +7,7 @@ namespace Jasmine;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use Jasmine\Console\Commands\Migrate;
+use Jasmine\Http\Middleware\Authenticate;
 
 class JasmineServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,8 @@ class JasmineServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->mergeConfigFrom(__DIR__ . '/../inc/config/auth.php', 'auth');
+
+        $this->app['router']->aliasMiddleware('jasmineAuth', Authenticate::class);
 
         $this->registerRoutes();
 

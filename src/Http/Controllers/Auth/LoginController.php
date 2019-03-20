@@ -21,12 +21,6 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -47,6 +41,11 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         return view('jasmine::guest.auth.login');
+    }
+
+    public function redirectTo()
+    {
+        return route('jasmine.dashboard');
     }
 
 
