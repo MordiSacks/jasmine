@@ -13,6 +13,16 @@ const mix = require('laravel-mix');
 
 mix
     .setPublicPath('inc/public/app')
+    .extract([
+        'axios',
+        'bootstrap',
+        'jquery',
+        'lodash',
+        'popper.js',
+        'vue',
+        'vue-router',
+    ])
     .js('inc/resources/mixes/app/js/app.js', 'inc/public/app/js')
+    .sass('inc/resources/mixes/app/scss/vendor.scss', 'inc/public/app/css')
     .sass('inc/resources/mixes/app/scss/app.scss', 'inc/public/app/css')
 ;
