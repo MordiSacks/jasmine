@@ -1,165 +1,136 @@
+<!--suppress HtmlUnknownAnchorTarget -->
 <template>
-    <div class="app">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">
-                    Jasmine
-                </a>
+    <v-app id="inspire">
+        <v-toolbar color="primary" dark fixed app clipped-left>
+            <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+            <v-toolbar-title>Jasmine</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-menu offset-y>
+                <v-btn flat="flat" slot="activator" small="small">
+                    {{ $root.user.name }}
+                    <v-icon>keyboard_arrow_down</v-icon>
+                </v-btn>
+                <v-list>
+                    <v-list-tile @click="">
+                        <v-icon class="mr-2">settings</v-icon>
+                        <v-list-tile-title>Settings</v-list-tile-title>
+                    </v-list-tile>
+                    <v-list-tile @click="logout">
+                        <v-icon class="mr-2">exit_to_app</v-icon>
+                        <v-list-tile-title>Logout</v-list-tile-title>
+                    </v-list-tile>
+                </v-list>
+            </v-menu>
+        </v-toolbar>
 
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#topNavBar" aria-controls="topNavBar"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <v-navigation-drawer dark fixed app clipped v-model="drawer">
+            <v-list dense>
+                <template v-for="item in menu">
+                    <v-layout row align-center
+                              v-if="item.heading"
+                              :key="item.heading">
+                        <v-flex xs6>
+                            <v-subheader v-if="item.heading">
+                                {{ item.heading }}
+                            </v-subheader>
+                        </v-flex>
+                        <v-flex xs6 class="text-xs-center">
+                            <a href="#!" class="body-2 black--text">EDIT</a>
+                        </v-flex>
+                    </v-layout>
 
-                <div class="collapse navbar-collapse justify-content-between" id="topNavBar">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Fish</a>
-                        </li>
-                    </ul>
+                    <v-list-group v-else-if="item.children" no-action
+                                  :append-icon="item.model ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+                                  v-model="item.model" :key="item.text" :prepend-icon="item.icon">
+                        <v-list-tile slot="activator">
+                            <v-list-tile-content>
+                                <v-list-tile-title>
+                                    {{ item.text }}
+                                </v-list-tile-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                        <v-list-tile v-for="(child, i) in item.children"
+                                     :key="i" :to="child.to" active-class="primary">
+                            <v-list-tile-action v-if="child.icon">
+                                <v-icon>{{ child.icon }}</v-icon>
+                            </v-list-tile-action>
+                            <v-list-tile-content>
+                                <v-list-tile-title>
+                                    {{ child.text }}
+                                </v-list-tile-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                    </v-list-group>
 
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a id="profileDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                { User Name }
-                                <span class="caret"></span>
-                            </a>
+                    <v-list-tile v-else :key="item.text" :to="item.to"
+                                 active-class="primary">
+                        <v-list-tile-action>
+                            <v-icon>{{ item.icon }}</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title>
+                                {{ item.text }}
+                            </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                </template>
+            </v-list>
+        </v-navigation-drawer>
 
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown">
-                                <a class="dropdown-item" href="#" @click="logout">
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <v-content>
+            <v-container fluid fill-height pa-0>
+                <v-layout align-start>
+                    <v-flex lg12>
+                        <router-view></router-view>
+                    </v-flex>
+                </v-layout>
+            </v-container>
+        </v-content>
 
-        <div class="container-fluid">
-            <div class="row">
-                <nav class="col-md-2 d-none d-md-block sidebar">
-                    <div class="sidebar-sticky">
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <router-link to="/" class="nav-link">
-                                    <i class="fa fa-home"></i>
-                                    Dashboard
-                                </router-link>
-                            </li>
-
-                            <li class="nav-item">
-                                <router-link to="/users" class="nav-link">
-                                    <i class="fa fa-users"></i>
-                                    Users
-                                </router-link>
-                            </li>
-
-                            <li class="nav-item">
-                                <router-link to="/settings" class="nav-link">
-                                    <i class="fa fa-cog"></i>
-                                    Settings
-                                </router-link>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link dropable" href="#">
-                                    <i class="fa fa-cog"></i>
-                                    tools
-                                </a>
-
-                                <div class="collapse">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                One
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                Two
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link dropable" href="#">
-                                    <i class="fa fa-cog"></i>
-                                    tools
-                                </a>
-
-                                <div class="collapse">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                One
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link dropable" href="#">
-                                                <i class="fa fa-cog"></i>
-                                                tools
-                                            </a>
-
-                                            <div class="collapse">
-                                                <ul class="nav flex-column">
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">
-                                                            One
-                                                        </a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">
-                                                            Two
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-
-                        </ul>
-                    </div>
-                </nav>
-
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                    <router-view></router-view>
-                </main>
-
-                <footer class="footer py-3 col-md-9 ml-sm-auto col-lg-10 px-4">
-                    <div class="container-fluid">
-                        <span class="text-muted">Place sticky footer content here.</span>
-                    </div>
-                </footer>
-
-            </div>
-        </div>
-    </div>
-
+        <v-footer dark class="white--text" inset app absolute>
+            <span>Jasmine</span>
+            <v-spacer></v-spacer>
+            <span>&copy; 2019</span>
+        </v-footer>
+    </v-app>
 </template>
 
 <script>
     export default {
         name: 'App',
+        data() {
+            return {
+                drawer: true,
+
+                menu: [
+                    {icon: 'dashboard', text: 'Dashboard', to: '/'},
+                    {icon: 'people', text: 'Users', to: '/users'},
+                    {
+                        icon: 'tune',
+                        text: 'Database & BREAD',
+                        model: false,
+                        children: [
+                            {icon: 'history', text: 'Import', to: '/fish'},
+                        ]
+                    },
+                ],
+            };
+        },
         methods: {
             logout() {
-                //axios.post();
+                axios.post('/logout').then(response => {
+                    window.location.reload();
+                });
             },
 
+            loadUser() {
+                axios.get('/user').then(response => this.$root.user = response.data);
+            },
 
         },
 
         mounted() {
-            $('.dropable').click(function () {
-                $(this).toggleClass('dropped');
-                $(this).siblings('.collapse').collapse('toggle');
-            });
+            this.loadUser();
         },
     }
 </script>

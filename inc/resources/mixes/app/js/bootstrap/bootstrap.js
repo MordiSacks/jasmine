@@ -1,5 +1,5 @@
 window._ = require('lodash');
 
-require('./jquery');
+//require('./jquery');
 
 require('./axios');

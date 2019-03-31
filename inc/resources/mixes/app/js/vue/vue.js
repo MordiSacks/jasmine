@@ -1,15 +1,19 @@
-import Buefy from 'buefy';
+import Vuetify from 'vuetify';
 import VueRouter from 'vue-router';
 import router from './router/router';
 import App from './elements/App';
+import VeeValidate from 'vee-validate';
+import VeeValidateLaravel from 'vee-validate-laravel';
 
 window.Vue = require('vue');
 
-Vue.use(Buefy);
 
+Vue.use(VeeValidate);
+Vue.use(VeeValidateLaravel);
 Vue.use(VueRouter);
-Vue.component('router-link', Vue.options.components.RouterLink);
-Vue.component('router-view', Vue.options.components.RouterView);
+Vue.use(Vuetify, {
+    rtl: document.dir === 'rtl',
+});
 
 /**
  * The following block of code may be used to automatically register your

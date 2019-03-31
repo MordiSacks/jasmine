@@ -3,6 +3,7 @@
 namespace Jasmine\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -14,5 +15,10 @@ class DashboardController extends Controller
     public function index()
     {
         return view('jasmine::app.app');
+    }
+
+    public function user()
+    {
+        return Auth::user();
     }
 }

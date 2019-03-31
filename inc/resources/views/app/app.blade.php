@@ -7,6 +7,8 @@
     {{-- CSRF Token --}}
     <meta name="clue" content="{{ csrf_token() }}">
 
+    <base href="{{ action('\Jasmine\Http\Controllers\DashboardController@index') }}">
+
     <title>
         @yield('title')
         @if(View::hasSection('title'))|@endif

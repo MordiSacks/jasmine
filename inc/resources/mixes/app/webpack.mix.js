@@ -15,12 +15,10 @@ mix
     .setPublicPath('inc/public/app')
     .extract([
         'axios',
-        'bootstrap',
-        'jquery',
         'lodash',
-        'popper.js',
         'vue',
         'vue-router',
+        'vuetify',
     ])
     .js('inc/resources/mixes/app/js/app.js', 'inc/public/app/js')
     .sass('inc/resources/mixes/app/scss/vendor.scss', 'inc/public/app/css')

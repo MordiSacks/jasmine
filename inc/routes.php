@@ -43,5 +43,8 @@ Route::group([
         'middleware' => ['jasmineAuth:jasmine_web'],
     ], function () {
         Route::get('/', 'DashboardController@index')->name('dashboard');
+        Route::get('/user', 'DashboardController@user');
+
+        Route::resource('jasmineUsers', 'JasmineUserController');
     });
 });
