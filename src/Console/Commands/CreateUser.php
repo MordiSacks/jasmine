@@ -37,11 +37,12 @@ class CreateUser extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
     public function handle()
     {
 
+        // loop until we have a valid email address
         do {
             $email = $this->ask('Enter E-mail address');
             if ($not_valid = !$this->validateEmail($email)) {
@@ -50,35 +51,48 @@ class CreateUser extends Command
 
         } while ($not_valid);
 
+        // get name
         $name = $this->ask('Enter Full Name');
 
+        // loop until we have a valid and confirmed password
         do {
             $password = $this->secret('Enter password');
 
-            if($len = (strlen($password) < 6)){
+            if ($len = (strlen($password) < 6)) {
                 $this->warn('Password must be at lest 6 characters!');
                 continue;
             }
 
             $confirmPassword = $this->secret('Confirm Password');
 
-            if($password !== $confirmPassword){
+            if ($password !== $confirmPassword) {
                 $this->warn('Passwords don\'t match!');
             }
 
         } while ($len || ($password !== $confirmPassword));
 
 
+        // create user
+        /** @var JasmineUser $user */
         $user = JasmineUser::create([
             'name'     => $name,
             'email'    => $email,
             'password' => bcrypt($password),
         ]);
 
-        return $user;
-
+        if ($user) {
+            $this->info('User created successfully');
+            dump($user->toArray());
+        } else {
+            $this->error('User was no created');
+        }
     }
 
+    /**
+     * @param $value
+     *
+     * @return bool
+     */
     public function validateEmail($value)
     {
         if (!is_string($value) && !(is_object($value) && method_exists($value, '__toString'))) {
