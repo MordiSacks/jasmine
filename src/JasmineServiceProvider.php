@@ -6,6 +6,7 @@ namespace Jasmine;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
+use Jasmine\Console\Commands\CreateUser;
 use Jasmine\Console\Commands\Migrate;
 use Jasmine\Http\Middleware\Authenticate;
 
@@ -46,6 +47,7 @@ class JasmineServiceProvider extends ServiceProvider
     private function registerConsoleCommands()
     {
         $this->commands(Migrate::class);
+        $this->commands(CreateUser::class);
     }
 
 
